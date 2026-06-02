@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)file:///C:/Users/Mina_Hong/Downloads/index_mina.html -->
+<html lang="zh-TW"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>鴻海(2317)持股追蹤</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
+
+  :root {
+    --bg: #f5f4f0;
+    --surface: #ffffff;
+    --surface2: #f0efe9;
+    --border: rgba(0,0,0,0.08);
+    --text: #1a1a1a;
+    --muted: #888;
+    --green: #1a7a52;
+    --green-bg: #eaf5f0;
+    --red: #c0392b;
+    --red-bg: #fdf0ef;
+    --accent: #2c3e6b;
+    --accent-light: #eef0f8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 2rem 1rem;
+  }
+
+  .page { max-width: 960px; margin: 0 auto; }
+
+  header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .title-block h1 {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--accent);
+  }
+  .title-block p { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+  .price-box {
+    background: var(--accent);
+    color: white;
+    border-radius: 12px;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .price-box label { font-size: 12px; opacity: 0.75; white-space: nowrap; }
+  .price-box input {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 8px;
+    color: white;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    width: 110px;
+    padding: 6px 10px;
+    text-align: center;
+    outline: none;
+  }
+  .price-box input:focus { border-color: rgba(255,255,255,0.7); }
+
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+    margin-bottom: 2rem;
+  }
+
+  .metric {
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 16px 18px;
+    border: 1px solid var(--border);
+  }
+  .metric-label { font-size: 11px; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .metric-value { font-size: 22px; font-weight: 700; }
+  .metric-sub { font-size: 12px; color: var(--muted); margin-top: 3px; }
+  .metric.green .metric-value { color: var(--green); }
+  .metric.red .metric-value { color: var(--red); }
+  .metric.accent .metric-value { color: var(--accent); }
+
+  .card {
+    background: var(--surface);
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+  }
+
+  .card-header {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    background: var(--surface2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .table-wrap { overflow-x: auto; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+
+  th {
+    padding: 10px 14px;
+    text-align: right;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--muted);
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  th:first-child, th:nth-child(2), th:nth-child(3) { text-align: left; }
+
+  td {
+    padding: 10px 14px;
+    text-align: right;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    white-space: nowrap;
+  }
+  td:first-child, td:nth-child(2), td:nth-child(3) { text-align: left; }
+
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--surface2); }
+
+  .badge {
+    display: inline-block;
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 20px;
+    font-weight: 500;
+    margin: 1px 1px;
+  }
+  .badge-y2022 { background: #e8f4fd; color: #1565c0; }
+  .badge-y2023 { background: #e8f8f0; color: #1a7a52; }
+  .badge-y2024 { background: #fef3e2; color: #9a5200; }
+  .badge-y2025 { background: #fdeef5; color: #8e1a5e; }
+  .badge-est   { background: #fff8e6; color: #9a6c00; }
+
+  .pnl-pos { color: var(--green); font-weight: 500; }
+  .pnl-neg { color: var(--red); font-weight: 500; }
+  .pnl-sub { font-size: 11px; opacity: 0.8; }
+
+  .div-years { display: flex; flex-wrap: wrap; gap: 2px; }
+
+  .total-row td {
+    font-weight: 700;
+    background: var(--accent-light);
+    border-top: 2px solid var(--border);
+    color: var(--accent);
+  }
+
+  .note {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.9;
+    padding: 1rem 0 2rem;
+  }
+  .note strong { color: var(--text); }
+  .updated { font-size: 11px; color: var(--muted); }
+
+  .div-table th:first-child, .div-table th:nth-child(2) { text-align: left; }
+  .div-table td:first-child, .div-table td:nth-child(2) { text-align: left; }
+
+  @media (max-width: 640px) {
+    .price-box { width: 100%; }
+    header { flex-direction: column; align-items: flex-start; }
+    .metric-value { font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <div class="title-block">
+      <h1>鴻海 2317｜持股追蹤</h1>
+      <p>買入明細 × 累積股利 × 即時損益試算</p>
+    </div>
+    <div class="price-box">
+      <label>目前股價（元）</label>
+      <input type="number" id="currentPrice" value="300" step="0.5" oninput="recalc()">
+    </div>
+  </header>
+
+  <div class="summary-grid" id="summary">
+    <div class="metric accent">
+      <div class="metric-label">總持有</div>
+      <div class="metric-value">20 張</div>
+      <div class="metric-sub">20,000 股</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">總投入成本</div>
+      <div class="metric-value">$2,658,400</div>
+      <div class="metric-sub">均價 132.9 元</div>
+    </div>
+    <div class="metric green">
+      <div class="metric-label">累積股利</div>
+      <div class="metric-value">$366,500</div>
+      <div class="metric-sub">含2026預計</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">目前市值</div>
+      <div class="metric-value">$6,000,000</div>
+      <div class="metric-sub">股價 300 元</div>
+    </div>
+    <div class="metric green">
+      <div class="metric-label">總損益（含股利）</div>
+      <div class="metric-value">+$3,708,100</div>
+      <div class="metric-sub">+139.5%</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span>買入明細</span>
+      <span class="updated" id="lastUpdate">最後更新：2026/6/2 下午3:01:26</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>買入日期</th>
+            <th>張數</th>
+            <th>買入均價</th>
+            <th>成本(元)</th>
+            <th>已領股利年度</th>
+            <th>累積股利(元)</th>
+            <th>目前市值(元)</th>
+            <th>總損益(含股利)</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"><tr>
+      <td>2022/3/21</td>
+      <td>1 張</td>
+      <td>105.0</td>
+      <td>105,000</td>
+      <td><div class="div-years"><span class="badge badge-y2022">2022</span><span class="badge badge-y2023">2023</span><span class="badge badge-y2024">2024</span><span class="badge badge-y2025">2025</span><span class="badge badge-est">2026*</span></div></td>
+      <td>$28,900</td>
+      <td>$300,000</td>
+      <td class="pnl-pos">+$223,900<br><span class="pnl-sub">(+213.2%)</span></td>
+    </tr><tr>
+      <td>2022/4/8</td>
+      <td>1 張</td>
+      <td>103.0</td>
+      <td>103,000</td>
+      <td><div class="div-years"><span class="badge badge-y2022">2022</span><span class="badge badge-y2023">2023</span><span class="badge badge-y2024">2024</span><span class="badge badge-y2025">2025</span><span class="badge badge-est">2026*</span></div></td>
+      <td>$28,900</td>
+      <td>$300,000</td>
+      <td class="pnl-pos">+$225,900<br><span class="pnl-sub">(+219.3%)</span></td>
+    </tr><tr>
+      <td>2022/6/7</td>
+      <td>1 張</td>
+      <td>114.0</td>
+      <td>114,000</td>
+      <td><div class="div-years"><span class="badge badge-y2022">2022</span><span class="badge badge-y2023">2023</span><span class="badge badge-y2024">2024</span><span class="badge badge-y2025">2025</span><span class="badge badge-est">2026*</span></div></td>
+      <td>$28,900</td>
+      <td>$300,000</td>
+      <td class="pnl-pos">+$214,900<br><span class="pnl-sub">(+188.5%)</span></td>
+    </tr><tr>
+      <td>2022/11/15</td>
+      <td>1 張</td>
+      <td>101.5</td>
+      <td>101,500</td>
+      <td><div class="div-years"><span class="badge badge-y2023">2023</span><span class="badge badge-y2024">2024</span><span class="badge badge-y2025">2025</span><span class="badge badge-est">2026*</span></div></td>
+      <td>$23,700</td>
+      <td>$300,000</td>
+      <td class="pnl-pos">+$222,200<br><span class="pnl-sub">(+218.9%)</span></td>
+    </tr><tr>
+      <td>2023/5/16</td>
+      <td>1 張</td>
+      <td>102.5</td>
+      <td>102,500</td>
+      <td><div class="div-years"><span class="badge badge-y2023">2023</span><span class="badge badge-y2024">2024</span><span class="badge badge-y2025">2025</span><span class="badge badge-est">2026*</span></div></td>
+      <td>$23,700</td>
+      <td>$300,000</td>
+      <td class="pnl-pos">+$221,200<br><span class="pnl-sub">(+215.8%)</span></td>
+    </tr><tr>
+      <td>2023/7/6</td>
+      <td>1 張</td>
+      <td>105.5</td>
+      <td>105,500</td>
+      <td><div class="div-years"><span class="badge badge-y2024">2024</span><span class="badge badge-y2025">2025</span><span class="badge badge-est">2026*</span></div></td>
+      <td>$18,400</td>
+      <td>$300,000</td>
+      <td class="pnl-pos">+$212,900<br><span class="pnl-sub">(+201.8%)</span></td>
+    </tr><tr>
+      <td>2023/7/7</td>
+      <td>1 張</td>
+      <td>105.5</td>
+      <td>105,500</td>
+      <td><div class="div-years"><span class="badge badge-y2024">2024</span><span class="badge badge-y2025">2025</span><span class="badge badge-est">2026*</span></div></td>
+      <td>$18,400</td>
+      <td>$300,000</td>
+      <td class="pnl-pos">+$212,900<br><span class="pnl-sub">(+201.8%)</span></td>
+    </tr><tr>
+      <td>2023/9/12</td>
+      <td>1 張</td>
+      <td>106.5</td>
+      <td>106,500</td>
+      <td><div class="div-years"><span class="badge badge-y2024">2024</span><span class="badge badge-y2025">2025</span><span class="badge badge-est">2026*</span></div></td>
+      <td>$18,400</td>
+      <td>$300,000</td>
+      <td class="pnl-pos">+$211,900<br><span class="pnl-sub">(+199.0%)</span></td>
+    </tr><tr>
+      <td>2023/10/23</td>
+      <td>1 張</td>
+      <td>101.0</td>
+      <td>101,000</td>
+      <td><div class="div-years"><span class="badge badge-y2024">2024</span><span class="badge badge-y2025">2025</span><span class="badge badge-est">2026*</span></div></td>
+      <td>$18,400</td>
+      <td>$300,000</td>
+      <td class="pnl-pos">+$217,400<br><span class="pnl-sub">(+215.2%)</span></td>
+    </tr><tr>
+      <td>2023/11/1</td>
+      <td>1 張</td>
+      <td>96.4</td>
+      <td>96,400</td>
+      <td><div class="div-years"><span class="badge badge-y2024">2024</span><span class="badge badge-y2025">2025</span><span class="badge badge-est">2026*</span></div></td>
+      <td>$18,400</td>
+      <td>$300,000</td>
+      <td class="pnl-pos">+$222,000<br><span class="pnl-sub">(+230.3%)</span></td>
+    </tr><tr>
+      <td>2024/4/16</td>
+      <td>1 張</td>
+      <td>139.0</td>
+      <td>139,000</td>
+      <td><div class="div-years"><span class="badge badge-y2024">2024</span><span class="badge badge-y2025">2025</span><span class="badge badge-est">2026*</span></div></td>
+      <td>$18,400</td>
+      <td>$300,000</td>
+      <td class="pnl-pos">+$179,400<br><span class="pnl-sub">(+129.1%)</span></td>
+    </tr><tr>
+      <td>2024/5/22</td>
+      <td>1 張</td>
+      <td>168.0</td>
+      <td>168,000</td>
+      <td><div class="div-years"><span class="badge badge-y2024">2024</span><span class="badge badge-y2025">2025</span><span class="badge badge-est">2026*</span></div></td>
+      <td>$18,400</td>
+      <td>$300,000</td>
+      <td class="pnl-pos">+$150,400<br><span class="pnl-sub">(+89.5%)</span></td>
+    </tr><tr>
+      <td>2024/5/29</td>
+      <td>1 張</td>
+      <td>181.5</td>
+      <td>181,500</td>
+      <td><div class="div-years"><span class="badge badge-y2024">2024</span><span class="badge badge-y2025">2025</span><span class="badge badge-est">2026*</span></div></td>
+      <td>$18,400</td>
+      <td>$300,000</td>
+      <td class="pnl-pos">+$136,900<br><span class="pnl-sub">(+75.4%)</span></td>
+    </tr><tr>
+      <td>2024/8/5</td>
+      <td>2 張</td>
+      <td>171.0</td>
+      <td>342,000</td>
+      <td><div class="div-years"><span class="badge badge-y2025">2025</span><span class="badge badge-est">2026*</span></div></td>
+      <td>$26,000</td>
+      <td>$600,000</td>
+      <td class="pnl-pos">+$284,000<br><span class="pnl-sub">(+83.0%)</span></td>
+    </tr><tr>
+      <td>2025/1/20</td>
+      <td>1 張</td>
+      <td>177.0</td>
+      <td>177,000</td>
+      <td><div class="div-years"><span class="badge badge-y2025">2025</span><span class="badge badge-est">2026*</span></div></td>
+      <td>$13,000</td>
+      <td>$300,000</td>
+      <td class="pnl-pos">+$136,000<br><span class="pnl-sub">(+76.8%)</span></td>
+    </tr><tr>
+      <td>2025/3/11</td>
+      <td>1 張</td>
+      <td>166.0</td>
+      <td>166,000</td>
+      <td><div class="div-years"><span class="badge badge-y2025">2025</span><span class="badge badge-est">2026*</span></div></td>
+      <td>$13,000</td>
+      <td>$300,000</td>
+      <td class="pnl-pos">+$147,000<br><span class="pnl-sub">(+88.6%)</span></td>
+    </tr><tr>
+      <td>2025/4/8</td>
+      <td>2 張</td>
+      <td>126.5</td>
+      <td>253,000</td>
+      <td><div class="div-years"><span class="badge badge-y2025">2025</span><span class="badge badge-est">2026*</span></div></td>
+      <td>$26,000</td>
+      <td>$600,000</td>
+      <td class="pnl-pos">+$373,000<br><span class="pnl-sub">(+147.4%)</span></td>
+    </tr><tr>
+      <td>2026/4/7</td>
+      <td>1 張</td>
+      <td>191.0</td>
+      <td>191,000</td>
+      <td><div class="div-years"><span class="badge badge-est">2026*</span></div></td>
+      <td>$7,200</td>
+      <td>$300,000</td>
+      <td class="pnl-pos">+$116,200<br><span class="pnl-sub">(+60.8%)</span></td>
+    </tr><tr class="total-row">
+    <td>合計</td>
+    <td>20 張</td>
+    <td>—</td>
+    <td>$2,658,400</td>
+    <td>—</td>
+    <td>$366,500</td>
+    <td>$6,000,000</td>
+    <td class="pnl-pos">+$3,708,100<br><span class="pnl-sub">(+139.5%)</span></td>
+  </tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">鴻海歷年現金股利</div>
+    <div class="table-wrap">
+      <table class="div-table">
+        <thead>
+          <tr>
+            <th style="text-align:left">發放年度</th>
+            <th style="text-align:left">所屬年度</th>
+            <th>每股股利(元)</th>
+            <th>除息日</th>
+            <th>備注</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>2022</td><td>2021</td><td>5.20</td><td>2022/7/4</td><td></td></tr>
+          <tr><td>2023</td><td>2022</td><td>5.30</td><td>2023/7/4</td><td></td></tr>
+          <tr><td>2024</td><td>2023</td><td>5.40</td><td>2024/7/2</td><td></td></tr>
+          <tr><td>2025</td><td>2024</td><td>5.80</td><td>2025/7/2</td><td></td></tr>
+          <tr><td>2026</td><td>2025</td><td>7.20</td><td>尚未公告</td><td><span class="badge badge-est">預計 2026/7</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <p class="note">
+    <strong>計算說明：</strong><br>
+    1. 股利以每年 <strong>7月初除息</strong> 為基準，除息日（含）後才買入者不計該年股利。<br>
+    2. 2026年股利（7.20元）為鴻海董事會提議數字，<strong>尚未正式除息</strong>，以 <span class="badge badge-est">2026*</span> 標示。<br>
+    3. 總損益 ＝ 目前市值 － 買入成本 ＋ 已累積股利（含預估）。<br>
+    4. 請更新「目前股價」欄位以取得最新損益。
+  </p>
+
+</div>
+
+<script>
+const exDates = {
+  2022: new Date(2022, 6, 4),
+  2023: new Date(2023, 6, 4),
+  2024: new Date(2024, 6, 2),
+  2025: new Date(2025, 6, 2),
+  2026: new Date(2026, 6, 1),
+};
+
+const dividendAmt = {
+  2022: 5.20,
+  2023: 5.30,
+  2024: 5.40,
+  2025: 5.80,
+  2026: 7.20,
+};
+
+const purchases = [
+  { date: '2022/3/21',  price: 105.0, lots: 1 },
+  { date: '2022/4/8',   price: 103.0, lots: 1 },
+  { date: '2022/6/7',   price: 114.0, lots: 1 },
+  { date: '2022/11/15', price: 101.5, lots: 1 },
+  { date: '2023/5/16',  price: 102.5, lots: 1 },
+  { date: '2023/7/6',   price: 105.5, lots: 1 },
+  { date: '2023/7/7',   price: 105.5, lots: 1 },
+  { date: '2023/9/12',  price: 106.5, lots: 1 },
+  { date: '2023/10/23', price: 101.0, lots: 1 },
+  { date: '2023/11/1',  price: 96.4,  lots: 1 },
+  { date: '2024/4/16',  price: 139.0, lots: 1 },
+  { date: '2024/5/22',  price: 168.0, lots: 1 },
+  { date: '2024/5/29',  price: 181.5, lots: 1 },
+  { date: '2024/8/5',   price: 171.0, lots: 2 },
+  { date: '2025/1/20',  price: 177.0, lots: 1 },
+  { date: '2025/3/11',  price: 166.0, lots: 1 },
+  { date: '2025/4/8',   price: 126.5, lots: 2 },
+  { date: '2026/4/7',   price: 191.0, lots: 1 },
+];
+
+function parseDate(s) {
+  const p = s.split('/');
+  return new Date(parseInt(p[0]), parseInt(p[1])-1, parseInt(p[2]));
+}
+
+function getEligibleYears(dateStr) {
+  const buyDate = parseDate(dateStr);
+  const eligible = [];
+  for (const yr in exDates) {
+    if (buyDate < exDates[yr]) eligible.push(parseInt(yr));
+  }
+  return eligible;
+}
+
+function fmt(n) { return Math.round(n).toLocaleString('zh-TW'); }
+function fmtDec(n, d=1) { return n.toFixed(d); }
+
+const badgeClass = {
+  2022: 'badge-y2022',
+  2023: 'badge-y2023',
+  2024: 'badge-y2024',
+  2025: 'badge-y2025',
+  2026: 'badge-est',
+};
+
+function recalc() {
+  const price = parseFloat(document.getElementById('currentPrice').value) || 300;
+  const tbody = document.getElementById('tbody');
+  tbody.innerHTML = '';
+
+  let totalCost=0, totalDiv=0, totalVal=0, totalLots=0;
+
+  purchases.forEach(p => {
+    const cost = p.price * 1000 * p.lots;
+    const years = getEligibleYears(p.date);
+    let divTotal = 0;
+    years.forEach(y => { divTotal += dividendAmt[y] * 1000 * p.lots; });
+    const currentVal = price * 1000 * p.lots;
+    const pnl = currentVal - cost + divTotal;
+    const pnlPct = pnl / cost * 100;
+
+    totalCost += cost;
+    totalDiv += divTotal;
+    totalVal += currentVal;
+    totalLots += p.lots;
+
+    const pnlClass = pnl >= 0 ? 'pnl-pos' : 'pnl-neg';
+    const sign = pnl >= 0 ? '+' : '';
+
+    const yearBadges = years.length
+      ? years.map(y =>
+          `<span class="badge ${badgeClass[y]}">${y}${y===2026?'*':''}</span>`
+        ).join('')
+      : '—';
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${p.date}</td>
+      <td>${p.lots} 張</td>
+      <td>${fmtDec(p.price)}</td>
+      <td>${fmt(cost)}</td>
+      <td><div class="div-years">${yearBadges}</div></td>
+      <td>$${fmt(divTotal)}</td>
+      <td>$${fmt(currentVal)}</td>
+      <td class="${pnlClass}">${sign}$${fmt(pnl)}<br><span class="pnl-sub">(${sign}${fmtDec(pnlPct)}%)</span></td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  const totalPnl = totalVal - totalCost + totalDiv;
+  const totalPct = totalPnl / totalCost * 100;
+  const tSign = totalPnl >= 0 ? '+' : '';
+  const tClass = totalPnl >= 0 ? 'pnl-pos' : 'pnl-neg';
+
+  const totalRow = document.createElement('tr');
+  totalRow.className = 'total-row';
+  totalRow.innerHTML = `
+    <td>合計</td>
+    <td>${totalLots} 張</td>
+    <td>—</td>
+    <td>$${fmt(totalCost)}</td>
+    <td>—</td>
+    <td>$${fmt(totalDiv)}</td>
+    <td>$${fmt(totalVal)}</td>
+    <td class="${tClass}">${tSign}$${fmt(totalPnl)}<br><span class="pnl-sub">(${tSign}${fmtDec(totalPct)}%)</span></td>
+  `;
+  tbody.appendChild(totalRow);
+
+  const pnlColor = totalPnl >= 0 ? 'green' : 'red';
+  const s2 = totalPnl >= 0 ? '+' : '';
+  const avgCost = totalCost / (totalLots * 1000);
+
+  document.getElementById('summary').innerHTML = `
+    <div class="metric accent">
+      <div class="metric-label">總持有</div>
+      <div class="metric-value">${totalLots} 張</div>
+      <div class="metric-sub">${(totalLots*1000).toLocaleString()} 股</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">總投入成本</div>
+      <div class="metric-value">$${fmt(totalCost)}</div>
+      <div class="metric-sub">均價 ${fmtDec(avgCost)} 元</div>
+    </div>
+    <div class="metric green">
+      <div class="metric-label">累積股利</div>
+      <div class="metric-value">$${fmt(totalDiv)}</div>
+      <div class="metric-sub">含2026預計</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">目前市值</div>
+      <div class="metric-value">$${fmt(totalVal)}</div>
+      <div class="metric-sub">股價 ${price} 元</div>
+    </div>
+    <div class="metric ${pnlColor}">
+      <div class="metric-label">總損益（含股利）</div>
+      <div class="metric-value">${s2}$${fmt(totalPnl)}</div>
+      <div class="metric-sub">${s2}${fmtDec(totalPct)}%</div>
+    </div>
+  `;
+
+  document.getElementById('lastUpdate').textContent =
+    '最後更新：' + new Date().toLocaleString('zh-TW');
+}
+
+recalc();
+</script>
+
+
+</body></html>
